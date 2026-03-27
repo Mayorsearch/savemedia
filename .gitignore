@@ -1,0 +1,40 @@
+# OS directory info files
+.DS_Store
+desktop.ini
+
+# node
+node_modules
+
+# static build
+build
+dist
+.output
+.tanstack
+.nitro
+
+# secrets
+.env
+.env.*
+!.env.example
+cookies.json
+keys.json
+
+# ide
+.vscode
+
+# workspace
+web/node_modules
+reference/cobalt-web/node_modules
+
+# generated app output
+api/dist
+web/.output
+web/.tanstack
+web/.nitro
+
+# private/reference material
+reference/
+
+# local scratch files
+CLAUDE.local.md
+foo.css

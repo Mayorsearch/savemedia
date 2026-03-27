@@ -1,0 +1,43 @@
+{
+  "name": "@savemedia/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "build": "vite build",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check": "bun run lint && bun run typecheck",
+    "preview": "vite preview",
+    "start": "node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@scalar/api-reference-react": "^0.9.15",
+    "@tailwindcss/vite": "^4.0.6",
+    "@tanstack/react-router": "^1.163.3",
+    "@tanstack/react-start": "^1.166.1",
+    "@tanstack/router-plugin": "^1.164.0",
+    "highlight.js": "^11.11.1",
+    "lucide-react": "^0.576.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.0.6",
+    "vite-tsconfig-paths": "^6.0.2",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.0.6",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "eslint": "^10.1.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.4.0",
+    "nitro": "^3.0.260311-beta",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.57.2",
+    "vite": "^7.1.7"
+  }
+}

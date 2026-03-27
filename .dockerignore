@@ -1,0 +1,30 @@
+# OS directory info files
+.DS_Store
+desktop.ini
+
+# node
+node_modules
+web/node_modules
+reference/cobalt-web/node_modules
+
+# static build
+build
+dist
+web/.output
+web/.tanstack
+
+# secrets
+.env
+.env.*
+!.env.example
+cookies.json
+keys.json
+
+# docker
+docker-compose.yml
+
+# ide
+.vscode
+
+# private reference artifacts
+reference

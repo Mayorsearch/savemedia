@@ -1,0 +1,29 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: savemedia-api-dev
+    environment:
+      API_URL: http://localhost:9000/
+      API_PORT: "9000"
+      CORS_WILDCARD: "0"
+      CORS_URL: http://localhost:3000
+      API_AUTH_REQUIRED: "0"
+    ports:
+      - "9000:9000"
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    container_name: savemedia-web-dev
+    depends_on:
+      - api
+    environment:
+      PORT: "3000"
+      PUBLIC_APP_URL: http://localhost:3000
+      COBALT_API_URL: http://api:9000
+      COBALT_API_KEY: ""
+    ports:
+      - "3000:3000"
