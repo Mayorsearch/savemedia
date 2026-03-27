@@ -6,6 +6,8 @@ desktop.ini
 node_modules
 web/node_modules
 reference/cobalt-web/node_modules
+.git
+gha-creds-*.json
 
 # static build
 build

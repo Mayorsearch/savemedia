@@ -20,7 +20,7 @@ const pack = findFile('package.json');
 
 const readGit = (filename) => {
     if (!root) {
-        throw 'no git repository root found';
+        return undefined;
     }
 
     return readFile(join(root, filename), 'utf8');
@@ -49,6 +49,10 @@ export const getBranch = async () => {
 }
 
 export const getRemote = async () => {
+    if (process.env.GIT_REMOTE) {
+        return process.env.GIT_REMOTE;
+    }
+
     let remote = (await readGit('.git/config'))
                     ?.split('\n')
                     ?.find(line => line.includes('url = '))
@@ -62,11 +66,7 @@ export const getRemote = async () => {
 
     remote = remote?.replace(/\.git$/, '');
 
-    if (!remote) {
-        throw 'could not parse remote';
-    }
-
-    return remote;
+    return remote || undefined;
 }
 
 export const getVersion = async () => {

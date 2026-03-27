@@ -9,11 +9,17 @@ NPM_BIN="${NPM_BIN:-$NODE_DIR/npm}"
 BUN_BIN="${BUN_BIN:-$HOME/.bun/bin/bun}"
 PNPM_STANDALONE_BIN="${PNPM_STANDALONE_BIN:-$HOME/.local/share/pnpm/.tools/pnpm-exe/10.33.0/pnpm}"
 GCLOUD_BIN="${GCLOUD_BIN:-$(command -v gcloud || true)}"
+GH_BIN="${GH_BIN:-$(command -v gh || true)}"
 PROJECT_ID="${PROJECT_ID:-$(gcloud config get-value project 2>/dev/null || true)}"
 REGION="${REGION:-$(gcloud config get-value run/region 2>/dev/null || true)}"
 ARTIFACT_REPO="${ARTIFACT_REPO:-savemedia}"
 API_IMAGE_NAME="${API_IMAGE_NAME:-api}"
 WEB_IMAGE_NAME="${WEB_IMAGE_NAME:-web}"
+API_SERVICE_NAME="${API_SERVICE_NAME:-savemedia-api}"
+WEB_SERVICE_NAME="${WEB_SERVICE_NAME:-savemedia-web}"
+API_KEYS_SECRET_NAME="${API_KEYS_SECRET_NAME:-savemedia-api-keys}"
+WEB_API_KEY_SECRET_NAME="${WEB_API_KEY_SECRET_NAME:-savemedia-web-api-key}"
+API_COOKIES_SECRET_NAME="${API_COOKIES_SECRET_NAME:-savemedia-api-cookies}"
 
 export PATH="$NODE_DIR:$PATH"
 
@@ -47,6 +53,15 @@ run_gcloud() {
   "$GCLOUD_BIN" "$@"
 }
 
+run_gh() {
+  require_binary "$GH_BIN" "gh"
+  "$GH_BIN" "$@"
+}
+
+secret_exists() {
+  run_gcloud secrets describe "$1" >/dev/null 2>&1
+}
+
 artifact_host() {
   echo "${REGION}-docker.pkg.dev"
 }
@@ -57,4 +72,10 @@ api_image_ref() {
 
 web_image_ref() {
   echo "$(artifact_host)/${PROJECT_ID}/${ARTIFACT_REPO}/${WEB_IMAGE_NAME}:latest"
+}
+
+runtime_service_account() {
+  local project_number
+  project_number="$(run_gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)')"
+  echo "${project_number}-compute@developer.gserviceaccount.com"
 }

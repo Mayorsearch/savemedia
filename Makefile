@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
-.PHONY: help doctor setup install dev dev-web dev-api dev-api-local lint typecheck check gcp-setup gcp-docker-auth push-api push-web push-images deploy-api deploy-web deploy-run build build-api preview-web compose-up compose-down compose-logs
+.PHONY: help doctor setup install dev dev-web dev-api dev-api-local lint typecheck check gcp-setup gcp-docker-auth gcp-secrets gcp-github-oidc push-api push-web push-images deploy-api deploy-web deploy-sync deploy-run build build-api preview-web compose-up compose-down compose-logs
 
 help:
 	@printf "Available targets:\n"
@@ -16,11 +16,14 @@ help:
 	@printf "  make check           # run lint + typecheck\n"
 	@printf "  make gcp-setup       # enable APIs and create Artifact Registry for local Docker pushes\n"
 	@printf "  make gcp-docker-auth # configure Docker auth for Artifact Registry\n"
+	@printf "  make gcp-secrets     # create or rotate the Cloud Run API key secrets\n"
+	@printf "  make gcp-github-oidc # bootstrap GitHub OIDC deploy access for this repo\n"
 	@printf "  make push-api        # build and push the API image locally\n"
 	@printf "  make push-web        # build and push the web image locally\n"
 	@printf "  make push-images     # build and push both images locally\n"
 	@printf "  make deploy-api      # deploy the API image to Cloud Run\n"
 	@printf "  make deploy-web      # deploy the web image to Cloud Run\n"
+	@printf "  make deploy-sync     # update the live service URLs after deployment\n"
 	@printf "  make deploy-run      # push both images and deploy both services\n"
 	@printf "  make build           # build the SaveMedia web app\n"
 	@printf "  make preview-web     # run the built SaveMedia web output\n"
@@ -61,6 +64,12 @@ gcp-setup:
 gcp-docker-auth:
 	@./scripts/gcp-docker-auth.sh
 
+gcp-secrets:
+	@./scripts/setup-cloudrun-secrets.sh
+
+gcp-github-oidc:
+	@./scripts/setup-github-oidc.sh
+
 push-api:
 	@./scripts/push-api-image.sh
 
@@ -75,6 +84,9 @@ deploy-api:
 
 deploy-web:
 	@./scripts/deploy-web-run.sh
+
+deploy-sync:
+	@./scripts/sync-cloudrun-urls.sh
 
 deploy-run:
 	@./scripts/deploy-all-run.sh

@@ -6,7 +6,11 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 
 "$ROOT_DIR/scripts/push-images.sh"
 "$ROOT_DIR/scripts/deploy-api-run.sh"
-API_SERVICE_URL="$(run_gcloud run services describe savemedia-api --region="$REGION" --format='value(status.url)')"
 "$ROOT_DIR/scripts/deploy-web-run.sh"
-WEB_PUBLIC_URL="$(run_gcloud run services describe savemedia-web --region="$REGION" --format='value(status.url)')"
-"$ROOT_DIR/scripts/deploy-api-run.sh" WEB_PUBLIC_URL="$WEB_PUBLIC_URL"
+"$ROOT_DIR/scripts/sync-cloudrun-urls.sh"
+
+API_SERVICE_URL="$(run_gcloud run services describe "$API_SERVICE_NAME" --region="$REGION" --format='value(status.url)')"
+WEB_PUBLIC_URL="$(run_gcloud run services describe "$WEB_SERVICE_NAME" --region="$REGION" --format='value(status.url)')"
+
+echo "Deployed API: ${API_SERVICE_URL}"
+echo "Deployed Web: ${WEB_PUBLIC_URL}"

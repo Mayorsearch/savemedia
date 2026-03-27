@@ -1,16 +1,16 @@
 # SaveMedia Workspace
 
-SaveMedia is a downloader product built on top of a private cobalt deployment.
+SaveMedia is a downloader product built on top of a private media-processing deployment.
 This repository is organized as a workspace with a branded TanStack Start web app,
-an imported cobalt processing API, and a private reference snapshot of the upstream
+an imported processing API, and a private reference snapshot of the upstream
 Svelte frontend for implementation research only.
 
 ## Workspace layout
 
-- `api/` - upstream cobalt processing API
-- `packages/` - upstream cobalt workspace packages
+- `api/` - imported processing API
+- `packages/` - imported workspace packages
 - `web/` - the SaveMedia TanStack Start app and public wrapper API
-- `docs/` - upstream cobalt operational documentation
+- `docs/` - operational and deployment documentation
 - `cloudrun/` - example Cloud Run service manifests for the web and api services
 - `reference/cobalt-web/` - non-deployed upstream frontend reference
 
@@ -23,11 +23,11 @@ The public SaveMedia API is served by the web app:
 - `GET /api/proxy-download`
 - `GET /docs/api`
 
-The web service talks to cobalt internally through `COBALT_API_URL` and `COBALT_API_KEY`.
+The web service talks to the private processing API internally through `COBALT_API_URL` and `COBALT_API_KEY`.
 
 ## Local setup
 
-This workspace is set up to work with direct Bun and Node binaries, plus Docker Compose for the cobalt API.
+This workspace is set up to work with direct Bun and Node binaries, plus Docker Compose for the private processing API.
 
 ```bash
 make doctor
@@ -44,10 +44,10 @@ Use these example env files as a starting point:
 
 - `make doctor` - show the resolved Bun, Node, and Docker toolchain
 - `make setup` - install workspace dependencies with Bun
-- `make dev` - start the dockerized cobalt API and the local SaveMedia web dev server
+- `make dev` - start the dockerized processing API and the local SaveMedia web dev server
 - `make dev-web` - run only the local TanStack frontend
-- `make dev-api` - run only the dockerized cobalt API
-- `make dev-api-local` - run the cobalt API directly with Node
+- `make dev-api` - run only the dockerized processing API
+- `make dev-api-local` - run the processing API directly with Node
 - `make lint` - run frontend ESLint
 - `make typecheck` - run frontend TypeScript checks
 - `make check` - run lint and typecheck together
@@ -55,6 +55,22 @@ Use these example env files as a starting point:
 - `make compose-down` - stop the full dockerized stack
 - `make build` - build the SaveMedia web app
 - `make preview-web` - run the built web output
+
+## GitHub Actions deployment
+
+This repo now includes:
+
+- `.github/workflows/ci.yml` for checks and Docker build verification
+- `.github/workflows/deploy.yml` for production Cloud Run deployment with GitHub OIDC
+- `docs/github-actions-deploy.md` for the setup steps and required GitHub secrets
+
+Bootstrap GitHub deploy access with:
+
+```bash
+make gcp-github-oidc
+```
+
+The bootstrap uses `gh` to create the repository variables and secrets that the deploy workflow needs.
 
 ## Cloud Run
 
