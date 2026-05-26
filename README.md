@@ -56,6 +56,62 @@ Use these example env files as a starting point:
 - `make build` - build the SaveMedia web app
 - `make preview-web` - run the built web output
 
+## Mobile app wrapper (Capacitor)
+
+The repository includes a Capacitor wrapper in `web/` for iOS and Android. The native apps keep using the existing SaveMedia web app via WebView.
+
+### App identity
+
+- Display name: `imediasave`
+- Internal app name: `SaveMedia`
+- App ID / bundle identifier / Android applicationId: `com.mayorsearch.savemedia`
+
+### Prerequisites
+
+- Node.js 20+ with Corepack enabled
+- `pnpm` via Corepack (`corepack pnpm --version`)
+- macOS + Xcode (for iOS builds)
+- Android Studio + Android SDK (for Android builds)
+
+### Install
+
+```bash
+corepack pnpm install --no-frozen-lockfile
+```
+
+### Build/export web assets and sync Capacitor
+
+```bash
+# Ensure web app build still succeeds
+corepack pnpm run mobile:build
+
+# Copy/update Capacitor web assets and native config
+corepack pnpm run mobile:sync
+```
+
+Capacitor is configured with a minimal bundled shell (`web/mobile-shell`) and can load deployed SaveMedia over HTTPS by setting:
+
+```bash
+export CAPACITOR_SERVER_URL="https://<your-production-savemedia-url>"
+corepack pnpm run mobile:sync
+```
+
+`CAPACITOR_SERVER_URL` should always be an `https://` URL for production.
+
+### Open and run in native IDEs
+
+```bash
+# Open native projects
+corepack pnpm run mobile:ios
+corepack pnpm run mobile:android
+
+# Optional direct CLI run (requires configured simulator/emulator/device)
+corepack pnpm run mobile:run:ios
+corepack pnpm run mobile:run:android
+```
+
+From Xcode/Android Studio, choose a simulator/device and run the `App` target/module.
+
 ## GitHub Actions deployment
 
 This repo now includes:

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">imediasave</string>
+    <string name="title_activity_main">SaveMedia</string>
+    <string name="package_name">com.mayorsearch.savemedia</string>
+    <string name="custom_url_scheme">com.mayorsearch.savemedia</string>
+</resources>

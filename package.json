@@ -30,6 +30,12 @@
     "build:web": "./scripts/build-web.sh",
     "build:api": "./scripts/build-api.sh",
     "preview:web": "./scripts/preview-web.sh",
+    "mobile:build": "corepack pnpm -C web run build",
+    "mobile:sync": "corepack pnpm run mobile:build && corepack pnpm -C web run cap:sync",
+    "mobile:ios": "corepack pnpm run mobile:sync && corepack pnpm -C web run cap:open:ios",
+    "mobile:android": "corepack pnpm run mobile:sync && corepack pnpm -C web run cap:open:android",
+    "mobile:run:ios": "corepack pnpm run mobile:sync && corepack pnpm -C web run cap:run:ios",
+    "mobile:run:android": "corepack pnpm run mobile:sync && corepack pnpm -C web run cap:run:android",
     "compose:up": "./scripts/compose-up.sh",
     "compose:down": "./scripts/compose-down.sh",
     "compose:logs": "docker compose logs -f api web"
